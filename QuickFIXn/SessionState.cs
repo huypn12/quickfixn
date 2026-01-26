@@ -399,6 +399,11 @@ public class SessionState : IDisposable
         lock (_sync) { MessageStore.Refresh(); }
     }
 
+    public bool SetAndIncrNextSenderMsgSeqNum(SeqNumType msgSeqNum, string msg)
+    {
+        lock (_sync) { return MessageStore.SetAndIncrNextSenderMsgSeqNum(msgSeqNum, msg); }
+    }
+
     #endregion
 
     public void Dispose()
