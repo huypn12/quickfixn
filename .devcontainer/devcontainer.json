@@ -1,0 +1,21 @@
+{
+  "name": "QuickFIX/n .NET Development",
+  "image": "mcr.microsoft.com/devcontainers/dotnet:10.0",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers/features/git:1": { "version": "os-provided" }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-dotnettools.csdevkit"
+      ]
+    }
+  },
+  "portsAttributes": {
+    "5000": { "label": "HTTP" },
+    "5001": { "label": "HTTPS" }
+  },
+  "remoteUser": "vscode"
+}
+
