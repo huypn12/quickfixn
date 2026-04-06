@@ -2,11 +2,19 @@
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 
-const string CaCertificatePath = "..\\..\\..\\..\\QuickFixn-TestCA.cer";
-const string ServerPfxCertificatePath = "..\\..\\..\\..\\QuickFixn-TestServer.pfx";
-const string ClientPfxCertificatePath = "..\\..\\..\\..\\QuickFixn-TestClient.pfx";
+if (args.Length == 0)
+{
+    Console.WriteLine("First parameter must be the certificate destination path.");
+    return;
+}
 
-const string PfxPassword = @"qfnpass123";
+string path = args[0];
+
+string caCertificatePath = Path.Join(path, "QuickFixn-TestCA.cer");
+string serverPfxCertificatePath = Path.Join(path, "QuickFixn-TestServer.pfx");
+string clientPfxCertificatePath = Path.Join(path, "QuickFixn-TestClient.pfx");
+
+const string pfxPassword = "qfnpass123";
 
 static X509Certificate2 CreateCACertificate()
 {
@@ -70,10 +78,13 @@ static X509Certificate2 CreateClientCertificate(X509Certificate2 caCertificate)
 }
 
 var caCertificate = CreateCACertificate();
-File.WriteAllBytes(CaCertificatePath, caCertificate.Export(X509ContentType.Cert));
+Console.WriteLine($"Writing CACertificate: {caCertificatePath}");
+File.WriteAllBytes(caCertificatePath, caCertificate.Export(X509ContentType.Cert));
 
 var serverCertificate = CreateServerCertificate(caCertificate);
-File.WriteAllBytes(ServerPfxCertificatePath, serverCertificate.Export(X509ContentType.Pfx, PfxPassword));
+Console.WriteLine($"Writing ServerCertificate: {serverPfxCertificatePath}");
+File.WriteAllBytes(serverPfxCertificatePath, serverCertificate.Export(X509ContentType.Pfx, pfxPassword));
 
 var clientCertificate = CreateClientCertificate(caCertificate);
-File.WriteAllBytes(ClientPfxCertificatePath, clientCertificate.Export(X509ContentType.Pfx, PfxPassword));
+Console.WriteLine($"Writing ClientCertificate: {clientPfxCertificatePath}");
+File.WriteAllBytes(clientPfxCertificatePath, clientCertificate.Export(X509ContentType.Pfx, pfxPassword));
