@@ -16,7 +16,22 @@ string clientPfxCertificatePath = Path.Join(path, "QuickFixn-TestClient.pfx");
 
 const string pfxPassword = "qfnpass123";
 
-static X509Certificate2 CreateCACertificate()
+var caCertificate = CreateCaCertificate();
+Console.WriteLine($"Writing CACertificate: {caCertificatePath}");
+File.WriteAllBytes(caCertificatePath, caCertificate.Export(X509ContentType.Cert));
+
+var serverCertificate = CreateServerCertificate(caCertificate);
+Console.WriteLine($"Writing ServerCertificate: {serverPfxCertificatePath}");
+File.WriteAllBytes(serverPfxCertificatePath, serverCertificate.Export(X509ContentType.Pfx, pfxPassword));
+
+var clientCertificate = CreateClientCertificate(caCertificate);
+Console.WriteLine($"Writing ClientCertificate: {clientPfxCertificatePath}");
+File.WriteAllBytes(clientPfxCertificatePath, clientCertificate.Export(X509ContentType.Pfx, pfxPassword));
+
+return;
+
+
+static X509Certificate2 CreateCaCertificate()
 {
     using var rsa = RSA.Create();
     var request = new CertificateRequest("CN=QuickFixn-TestCA", rsa, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
@@ -30,7 +45,7 @@ static X509Certificate2 CreateCACertificate()
 static X509Certificate2 CreateServerCertificate(X509Certificate2 caCertificate)
 {
     using var rsa = RSA.Create();
-    using (RSA caPrivateKey = caCertificate.GetRSAPrivateKey())
+    using (RSA? caPrivateKey = caCertificate.GetRSAPrivateKey())
     {
         var request = new CertificateRequest($"CN=QuickFixn-TestServer", rsa, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
         request.CertificateExtensions.Add(new X509BasicConstraintsExtension(false, false, 0, true));
@@ -55,7 +70,7 @@ static X509Certificate2 CreateServerCertificate(X509Certificate2 caCertificate)
 static X509Certificate2 CreateClientCertificate(X509Certificate2 caCertificate)
 {
     using var rsa = RSA.Create();
-    using (RSA caPrivateKey = caCertificate.GetRSAPrivateKey())
+    using (RSA? caPrivateKey = caCertificate.GetRSAPrivateKey())
     {
         var request = new CertificateRequest($"CN=QuickFixn-TestClient", rsa, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
         request.CertificateExtensions.Add(new X509BasicConstraintsExtension(false, false, 0, true));
@@ -76,15 +91,3 @@ static X509Certificate2 CreateClientCertificate(X509Certificate2 caCertificate)
         return certificate.CopyWithPrivateKey(rsa);
     }
 }
-
-var caCertificate = CreateCACertificate();
-Console.WriteLine($"Writing CACertificate: {caCertificatePath}");
-File.WriteAllBytes(caCertificatePath, caCertificate.Export(X509ContentType.Cert));
-
-var serverCertificate = CreateServerCertificate(caCertificate);
-Console.WriteLine($"Writing ServerCertificate: {serverPfxCertificatePath}");
-File.WriteAllBytes(serverPfxCertificatePath, serverCertificate.Export(X509ContentType.Pfx, pfxPassword));
-
-var clientCertificate = CreateClientCertificate(caCertificate);
-Console.WriteLine($"Writing ClientCertificate: {clientPfxCertificatePath}");
-File.WriteAllBytes(clientPfxCertificatePath, clientCertificate.Export(X509ContentType.Pfx, pfxPassword));
