@@ -38,10 +38,6 @@ upload_to_s3.rb
 .vscode/
 tmp/
 
-# certs for Example configs; user must generate these with GenerateKeys app
-Examples/QuickFixn-TestCA.cer
-Examples/QuickFixn-TestClient.pfx
-Examples/QuickFixn-TestServer.pfx
 
 # ReSharper is a .NET coding add-in
 _ReSharper*/
