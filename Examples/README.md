@@ -27,8 +27,9 @@ To run each, go into its directory and use `dotnet run <config>`, e.g.
 Many of the following applications have alternate `*_ssl.cfg`
 files that you can use to demonstrate secure communication over SSL.
 
-**However**, they require some certificate files that must be created by
-the included `GenerateKeys` app.
+**However**, these configs point to certificats that are only valid for a few days.
+You will need to generate new certificates.
+You can do this by using the included `GenerateKeys` app.
 
 ```
 ~/quickfixn/GenerateKeys$ dotnet run ../Examples/
