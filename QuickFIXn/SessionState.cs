@@ -373,6 +373,11 @@ public class SessionState : IDisposable
         lock (_sync) { MessageStore.IncrNextTargetMsgSeqNum(); }
     }
 
+    public bool SetAndIncrNextSenderMsgSeqNum(SeqNumType msgSeqNum, string msg)
+    {
+        lock (_sync) { return MessageStore.SetAndIncrNextSenderMsgSeqNum(msgSeqNum, msg); }
+    }
+
     public DateTime? CreationTime
     {
         get
@@ -397,11 +402,6 @@ public class SessionState : IDisposable
     public void Refresh()
     {
         lock (_sync) { MessageStore.Refresh(); }
-    }
-
-    public bool SetAndIncrNextSenderMsgSeqNum(SeqNumType msgSeqNum, string msg)
-    {
-        lock (_sync) { return MessageStore.SetAndIncrNextSenderMsgSeqNum(msgSeqNum, msg); }
     }
 
     #endregion

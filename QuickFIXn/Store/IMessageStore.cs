@@ -18,7 +18,7 @@ public interface IMessageStore : IDisposable
     void Get(SeqNumType startSeqNum, SeqNumType endSeqNum, List<string> messages);
 
     /// <summary>
-    /// Adds a raw fix message to the store with the give sequence number
+    /// Adds a raw fix message to the store with the given sequence number
     /// </summary>
     /// <param name="msgSeqNum">the sequence number</param>
     /// <param name="msg">the raw FIX message string</param>
@@ -31,6 +31,24 @@ public interface IMessageStore : IDisposable
     void IncrNextSenderMsgSeqNum();
     void IncrNextTargetMsgSeqNum();
 
+    /// <summary>
+    /// The purpose of this method is to combine <see cref="Set(SeqNumType, string)"/>
+    /// and <see cref="IncrNextSenderMsgSeqNum()"/> into one call, for use in situations
+    /// when these operations should be performed together.
+    /// The default implementation simply calls those two functions.
+    /// Certain custom IMessageStore implementations (e.g. DB-backed stores)
+    /// may need to override the default implementation to ensure that these two behaviors
+    /// are combined into a single atomic operation.
+    /// <param name="msgSeqNum">the sequence number</param>
+    /// <param name="msg">the raw FIX message string</param>
+    /// <returns>true if successful, false otherwise</returns>
+    /// </summary>
+    bool SetAndIncrNextSenderMsgSeqNum(SeqNumType msgSeqNum, string msg)
+    {
+        bool result = Set(msgSeqNum, msg);
+        IncrNextSenderMsgSeqNum();
+        return result;
+    }
 
     DateTime? CreationTime { get; }
 
@@ -48,21 +66,5 @@ public interface IMessageStore : IDisposable
     /// or throw an exception.
     /// </summary>
     void Refresh();
-
-    /// <summary>
-    /// Adds a raw fix message to the store with the give sequence number
-    /// and increments the <see cref="NextSenderMsgSeqNum" />. This method
-    /// has a default implementation calling <see cref="Set(SeqNumType, string)" />
-    /// and <see cref="IncrNextSenderMsgSeqNum()" />. It is not intended to change
-    /// this default implementation in custom IMessageStore implementations.
-    /// </summary>
-    /// <param name="msgSeqNum">the sequence number</param>
-    /// <param name="msg">the raw FIX message string</param>
-    /// <returns>true if successful, false otherwise</returns>
-    public bool SetAndIncrNextSenderMsgSeqNum(SeqNumType msgSeqNum, string msg)
-    {
-        bool result = Set(msgSeqNum, msg);
-        IncrNextSenderMsgSeqNum();
-        return result;
-    }
 }
+
