@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QuickFix.DataDictionary
 {
@@ -10,9 +8,9 @@ namespace QuickFix.DataDictionary
     /// </summary>
     public class DDMap : IFieldMapSpec
     {
-        public Dictionary<int, DDField> Fields = new Dictionary<int, DDField>();
-        public Dictionary<int, DDGrp> Groups = new Dictionary<int, DDGrp>();
-        public HashSet<int> ReqFields = new HashSet<int>();
+        public Dictionary<int, DDField> Fields = new();
+        public Dictionary<int, DDGrp> Groups = new();
+        public HashSet<int> ReqFields = [];
 
         public void AddField(DDField fld)
         {
