@@ -3,58 +3,57 @@ using System.Collections.Generic;
 using System.Net;
 using QuickFix.Logger;
 
-namespace QuickFix
+namespace QuickFix;
+
+internal class AcceptorSocketDescriptor
 {
-    internal class AcceptorSocketDescriptor
+    public ThreadedSocketReactor SocketReactor { get; }
+    public IPEndPoint Address { get; }
+
+    private readonly Dictionary<SessionID, Session> _acceptedSessions = new ();
+
+    internal AcceptorSocketDescriptor(
+        IPEndPoint socketEndPoint,
+        SocketSettings socketSettings,
+        IQuickFixLoggerFactory loggerFactory)
     {
-        public ThreadedSocketReactor SocketReactor { get; }
-        public IPEndPoint Address { get; }
+        Address = socketEndPoint;
+        SocketReactor = new ThreadedSocketReactor(Address, socketSettings, this, loggerFactory);
+    }
 
-        private readonly Dictionary<SessionID, Session> _acceptedSessions = new ();
+    internal AcceptorSocketDescriptor(
+        IPEndPoint socketEndPoint,
+        SocketSettings socketSettings,
+        SettingsDictionary sessionDict,
+        IQuickFixLoggerFactory nonSessionLog) : this(socketEndPoint, socketSettings, nonSessionLog)
+    { }
 
-        internal AcceptorSocketDescriptor(
-            IPEndPoint socketEndPoint,
-            SocketSettings socketSettings,
-            IQuickFixLoggerFactory loggerFactory)
+    internal void AcceptSession(Session session)
+    {
+        lock (_acceptedSessions)
         {
-            Address = socketEndPoint;
-            SocketReactor = new ThreadedSocketReactor(Address, socketSettings, this, loggerFactory);
+            _acceptedSessions[session.SessionID] = session;
         }
+    }
 
-        internal AcceptorSocketDescriptor(
-            IPEndPoint socketEndPoint,
-            SocketSettings socketSettings,
-            SettingsDictionary sessionDict,
-            IQuickFixLoggerFactory nonSessionLog) : this(socketEndPoint, socketSettings, nonSessionLog)
-        { }
-
-        internal void AcceptSession(Session session)
+    /// <summary>
+    /// Remove a session from those tied to this socket.
+    /// </summary>
+    /// <param name="sessionId">ID of session to be removed</param>
+    /// <returns>true if session removed, false if not found</returns>
+    internal bool RemoveSession(SessionID sessionId)
+    {
+        lock (_acceptedSessions)
         {
-            lock (_acceptedSessions)
-            {
-                _acceptedSessions[session.SessionID] = session;
-            }
+            return _acceptedSessions.Remove(sessionId);
         }
+    }
 
-        /// <summary>
-        /// Remove a session from those tied to this socket.
-        /// </summary>
-        /// <param name="sessionId">ID of session to be removed</param>
-        /// <returns>true if session removed, false if not found</returns>
-        internal bool RemoveSession(SessionID sessionId)
+    internal Dictionary<SessionID, Session> GetAcceptedSessions()
+    {
+        lock (_acceptedSessions)
         {
-            lock (_acceptedSessions)
-            {
-                return _acceptedSessions.Remove(sessionId);
-            }
-        }
-
-        internal Dictionary<SessionID, Session> GetAcceptedSessions()
-        {
-            lock (_acceptedSessions)
-            {
-                return new Dictionary<SessionID, Session>(_acceptedSessions);
-            }
+            return new Dictionary<SessionID, Session>(_acceptedSessions);
         }
     }
 }
