@@ -1,6 +1,5 @@
 ﻿using QuickFix.ObjectPooling;
 using System;
-using System.Text;
 
 namespace QuickFix
 {
@@ -55,7 +54,7 @@ namespace QuickFix
         /// </summary>
         public int CounterField { get; }
 
-        [Obsolete("Use CounterField instead")]
+        [Obsolete("Use CounterField instead.  This will be removed in 1.16.")]
         public int Field => CounterField;
 
         /// <summary>
