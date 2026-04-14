@@ -29,11 +29,11 @@ namespace QuickFix.Fields
         /// </summary>
         public int GetTotal();
 
-        [Obsolete("Use capitalized ToStringField() instead")]
+        [Obsolete("Use capitalized ToStringField() instead. This function will be removed in 1.16.")]
         public string toStringField();
-        [Obsolete("Use capitalized GetLength() instead")]
+        [Obsolete("Use capitalized GetLength() instead. This function will be removed in 1.16.")]
         public int getLength();
-        [Obsolete("Use capitalized GetTotal() instead")]
+        [Obsolete("Use capitalized GetTotal() instead. This function will be removed in 1.16.")]
         public int getTotal();
     }
 }
