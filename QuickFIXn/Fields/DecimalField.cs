@@ -1,23 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace QuickFix.Fields
+namespace QuickFix.Fields;
+
+/// <summary>
+/// A decimal FIX field
+/// </summary>
+public class DecimalField : FieldBase<decimal>
 {
-    /// <summary>
-    /// A decimal FIX field
-    /// </summary>
-    public class DecimalField : FieldBase<Decimal>
+    public DecimalField(int tag)
+        : base(tag, new decimal(0.0)) {}
+
+    public DecimalField(int tag, decimal val)
+        : base(tag, val) { }
+
+    protected override string MakeString()
     {
-        public DecimalField(int tag)
-            : base(tag, new Decimal(0.0)) {}
-
-        public DecimalField(int tag, Decimal val)
-            : base(tag, val) { }
-
-        protected override string MakeString()
-        {
-            return Converters.DecimalConverter.Convert(Value);
-        }
+        return Converters.DecimalConverter.Convert(Value);
     }
 }
