@@ -38,6 +38,7 @@ What's New
 * #949 - new settings RedactFieldsInLogs & RedactionLogText (gbirchmeier)
 * #983 - new MessageFactoryNotFound exception provides better feedback (gbirchmeier)
 * #1014 - deprecate DateTimeConverter.ParseToTimeOnly (gbirchmeier)
+* #987 - new interface method IMessageStore.SetAndIncrNextSenderMsgSeqNum (asmeisne)
 
 
 ### v1.14.0
