@@ -31,7 +31,14 @@ What's New
 
 
 ### next release (v1.14.1 or higher)
-* #841 - support for CME Enhanced Resend (gbirchmeier)
+* #841 - experimental support for CME Enhanced Resend (gbirchmeier)
+* #961 - new GenerateKeys app to create Example-app SSL certs (dckorben/gbirchmeier)
+* #1001 - AcceptanceTests bug: double.Parse with InvariantCulture (gbirchmeier)
+* #562 - deprecate Message.IsHeaderField without transport DD param (gbirchmeier)
+* #949 - new settings RedactFieldsInLogs & RedactionLogText (gbirchmeier)
+* #983 - new MessageFactoryNotFound exception provides better feedback (gbirchmeier)
+* #1014 - deprecate DateTimeConverter.ParseToTimeOnly (gbirchmeier)
+* #987 - new interface method IMessageStore.SetAndIncrNextSenderMsgSeqNum (asmeisne)
 
 
 ### v1.14.0

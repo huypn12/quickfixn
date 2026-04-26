@@ -38,6 +38,7 @@ upload_to_s3.rb
 .vscode/
 tmp/
 
+
 # ReSharper is a .NET coding add-in
 _ReSharper*/
 *.[Rr]e[Ss]harper

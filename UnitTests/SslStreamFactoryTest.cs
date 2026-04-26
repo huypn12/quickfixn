@@ -105,11 +105,14 @@ public class SslStreamFactoryTest
         var settings = new SocketSettings();
         settings.Configure(dict);
 
-        var logger = new LogFactoryAdapter(new ScreenLogFactory(true, true, true));
+        var logger = new LogFactoryAdapter(new NullLogFactory());
         var factory = new SslStreamFactory(settings, logger);
 
         var resultServer = factory.VerifyRemoteCertificate(ServerCertificate, SslPolicyErrors.None, SslStreamFactory.SERVER_AUTHENTICATION_OID);
         var resultClient = factory.VerifyRemoteCertificate(ServerCertificate, SslPolicyErrors.None, SslStreamFactory.CLIENT_AUTHENTICATION_OID);
+        // Logged
+        // <event> Remote certificate is not intended for client authentication: It is missing enhanced key usage 1.3.6.1.5.5.7.3.2
+        // TODO: above log is probably not supposed to happen
 
         Assert.That(resultServer, Is.True);
         Assert.That(resultClient, Is.False);
@@ -127,11 +130,16 @@ public class SslStreamFactoryTest
         var settings = new SocketSettings();
         settings.Configure(dict);
 
-        var logger = new LogFactoryAdapter(new ScreenLogFactory(true, true, true));
+        var logger = new LogFactoryAdapter(new NullLogFactory());
         var factory = new SslStreamFactory(settings, logger);
 
         var resultServer = factory.VerifyRemoteCertificate(ServerCertificate, SslPolicyErrors.RemoteCertificateChainErrors, SslStreamFactory.SERVER_AUTHENTICATION_OID);
+        // Logged:
+        // <event> CACertificatePath is not specified
+        // <event> Remote certificate was not recognized as a valid certificate: RemoteCertificateChainErrors
         var resultClient = factory.VerifyRemoteCertificate(ServerCertificate, SslPolicyErrors.RemoteCertificateChainErrors, SslStreamFactory.CLIENT_AUTHENTICATION_OID);
+        // Logged:
+        // <event> Remote certificate is not intended for client authentication: It is missing enhanced key usage 1.3.6.1.5.5.7.3.2
 
         Assert.That(resultServer, Is.False);
         Assert.That(resultClient, Is.False);
@@ -150,11 +158,15 @@ public class SslStreamFactoryTest
         var settings = new SocketSettings();
         settings.Configure(dict);
 
-        var logger = new LogFactoryAdapter(new ScreenLogFactory(true, true, true));
+        var logger = new LogFactoryAdapter(new NullLogFactory());
         var factory = new SslStreamFactory(settings, logger);
 
         var resultServer = factory.VerifyRemoteCertificate(ServerCertificate, SslPolicyErrors.RemoteCertificateChainErrors, SslStreamFactory.SERVER_AUTHENTICATION_OID);
+        // Logged:
+        // <event> Remote certificate was not recognized as a valid certificate: RemoteCertificateChainErrors
         var resultClient = factory.VerifyRemoteCertificate(ServerCertificate, SslPolicyErrors.RemoteCertificateChainErrors, SslStreamFactory.CLIENT_AUTHENTICATION_OID);
+        // Logged:
+        // <event> Remote certificate is not intended for client authentication: It is missing enhanced key usage 1.3.6.1.5.5.7.3.2
 
         Assert.That(resultServer, Is.False);
         Assert.That(resultClient, Is.False);
@@ -173,10 +185,13 @@ public class SslStreamFactoryTest
         var settings = new SocketSettings();
         settings.Configure(dict);
 
-        var logger = new LogFactoryAdapter(new ScreenLogFactory(true, true, true));
+        var logger = new LogFactoryAdapter(new NullLogFactory());
         var factory = new SslStreamFactory(settings, logger);
 
         var resultServer = factory.VerifyRemoteCertificate(ClientCertificate, SslPolicyErrors.None, SslStreamFactory.SERVER_AUTHENTICATION_OID);
+        // Logged
+        // <event> Remote certificate is not intended for server authentication: It is missing enhanced key usage 1.3.6.1.5.5.7.3.1
+        // TODO: above log is probably not supposed to happen
         var resultClient = factory.VerifyRemoteCertificate(ClientCertificate, SslPolicyErrors.None, SslStreamFactory.CLIENT_AUTHENTICATION_OID);
 
         Assert.That(resultServer, Is.False);
@@ -195,11 +210,16 @@ public class SslStreamFactoryTest
         var settings = new SocketSettings();
         settings.Configure(dict);
 
-        var logger = new LogFactoryAdapter(new ScreenLogFactory(true, true, true));
+        var logger = new LogFactoryAdapter(new NullLogFactory());
         var factory = new SslStreamFactory(settings, logger);
 
         var resultServer = factory.VerifyRemoteCertificate(ClientCertificate, SslPolicyErrors.RemoteCertificateChainErrors, SslStreamFactory.SERVER_AUTHENTICATION_OID);
+        // Logged:
+        // <event> Remote certificate is not intended for server authentication: It is missing enhanced key usage 1.3.6.1.5.5.7.3.1
         var resultClient = factory.VerifyRemoteCertificate(ClientCertificate, SslPolicyErrors.RemoteCertificateChainErrors, SslStreamFactory.CLIENT_AUTHENTICATION_OID);
+        // Logged:
+        // <event> CACertificatePath is not specified
+        // <event> Remote certificate was not recognized as a valid certificate: RemoteCertificateChainErrors
 
         Assert.That(resultServer, Is.False);
         Assert.That(resultClient, Is.False);
@@ -218,11 +238,15 @@ public class SslStreamFactoryTest
         var settings = new SocketSettings();
         settings.Configure(dict);
 
-        var logger = new LogFactoryAdapter(new ScreenLogFactory(true, true, true));
+        var logger = new LogFactoryAdapter(new NullLogFactory());
         var factory = new SslStreamFactory(settings, logger);
 
         var resultServer = factory.VerifyRemoteCertificate(ClientCertificate, SslPolicyErrors.RemoteCertificateChainErrors, SslStreamFactory.SERVER_AUTHENTICATION_OID);
+        // Logged:
+        // <event> Remote certificate is not intended for server authentication: It is missing enhanced key usage 1.3.6.1.5.5.7.3.1
         var resultClient = factory.VerifyRemoteCertificate(ClientCertificate, SslPolicyErrors.RemoteCertificateChainErrors, SslStreamFactory.CLIENT_AUTHENTICATION_OID);
+        // Logged:
+        // <event> Remote certificate was not recognized as a valid certificate: RemoteCertificateChainErrors
 
         Assert.That(resultServer, Is.False);
         Assert.That(resultClient, Is.False);
