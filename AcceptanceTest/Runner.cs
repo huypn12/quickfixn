@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Threading;
@@ -35,7 +36,7 @@ internal class Runner : IDisposable
             {
                 // e.g. sleep(0.5)
 
-                Thread.Sleep(TimeSpan.FromSeconds(double.Parse(line[6..^1])));
+                Thread.Sleep(TimeSpan.FromSeconds(double.Parse(line[6..^1], CultureInfo.InvariantCulture)));
             }
             else if (line[0] is 'i' or 'e' && line.EndsWith("DISCONNECT"))
             {

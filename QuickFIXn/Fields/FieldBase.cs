@@ -147,13 +147,13 @@ public abstract class FieldBase<T> : IField
         _changed = false;
     }
 
-    [Obsolete("Use capitalized ToStringField() instead")]
+    [Obsolete("Use capitalized ToStringField() instead. This function will be removed in 1.16.")]
     public string toStringField() { return ToStringField(); }
-    [Obsolete("Use capitalized GetLength() instead")]
+    [Obsolete("Use capitalized GetLength() instead. This function will be removed in 1.16.")]
     public int getLength() { return GetLength(); }
-    [Obsolete("Use capitalized GetTotal() instead")]
+    [Obsolete("Use capitalized GetTotal() instead. This function will be removed in 1.16.")]
     public int getTotal() { return GetTotal(); }
-    [Obsolete("Renamed to 'Value'")]
+    [Obsolete("Renamed to 'Value'. This attribute name will be removed in 1.16.")]
     public T Obj
     {
         get => _value;
@@ -163,9 +163,9 @@ public abstract class FieldBase<T> : IField
             _changed = true;
         }
     }
-    [Obsolete("Use Value getter property")]
+    [Obsolete("Use Value getter property. This function will be removed in 1.16.")]
     public T getValue() { return Value; }
-    [Obsolete("Use Value setter property")]
+    [Obsolete("Use Value setter property. This function will be removed in 1.16.")]
     public void setValue(T v) { Value = v; }
 }
 

@@ -8,7 +8,16 @@ QuickFIX/n is a .NET port of QuickFIX, an open source C++ FIX engine.
 What's New
 ----------
 
-**CAUTION:**  
+**IMPORTANT NOTICES:**  
+
+* **1.14.1 adds support for .NET 10, and will be the *final* version that supports .NET 8.**  
+  [Microsoft is ending .NET 8/9 support on November 10, 2026](https://dotnet.microsoft.com/en-us/download/visual-studio-sdks).
+
+### Once again for the people in the back:
+### SUPPORT FOR .NET 8.0 WILL BE REMOVED IN 1.15 !
+### Start your transition to .NET 10.0 today!
+###
+
 * **Starting with 1.14, the QuickFIX message **nuget** packages have been renamed!**
     **Please remove the old package and import the new package!**
     (See issue #627 for more information.)
@@ -23,16 +32,27 @@ What's New
     * ~~QuickFIX.FIX5.0SP1.{ver}~~ becomes **QuickFIX.FIX50SP1.{ver}**
     * ~~QuickFIX.FIX5.0SP2.{ver}~~ becomes **QuickFIX.FIX50SP2.{ver}**
     * ~~QuickFIX.FIXT1.1.{ver}~~ becomes **QuickFIX.FIXT11.{ver}**
-  
 * **1.13.0 has moved to .NET 8 (as Microsoft is ending .NET 6 support on Nov 12, 2024)**
 * **There are breaking changes between 1.12 and 1.13!  Please review the 1.13.0 notes below.**
 * **There are breaking changes between 1.11 and 1.12!  Please review the 1.12.0 notes below.**
 * **There are breaking changes between 1.10 and 1.11!  Please review the 1.11.0 notes below.**
 
 
-### next release (v1.14.1 or higher)
-* #841 - support for CME Enhanced Resend (gbirchmeier)
+### v1.15.0
+* #1021 - remove .NET 8 support; remove expired deprecations
 
+
+### v1.14.1
+
+* #841 - experimental support for CME Enhanced Resend (gbirchmeier)
+* #961 - new GenerateKeys app to create Example-app SSL certs (dckorben/gbirchmeier)
+* #1001 - AcceptanceTests bug: double.Parse with InvariantCulture (gbirchmeier)
+* #562 - deprecate Message.IsHeaderField without transport DD param (gbirchmeier)
+* #949 - new settings RedactFieldsInLogs & RedactionLogText (gbirchmeier)
+* #983 - new MessageFactoryNotFound exception provides better feedback (gbirchmeier)
+* #1014 - deprecate DateTimeConverter.ParseToTimeOnly (gbirchmeier)
+* #987 - new interface method IMessageStore.SetAndIncrNextSenderMsgSeqNum (asmeisne)
+* #1004 - add .NET 10 support (gbirchmeier)
 
 ### v1.14.0
 

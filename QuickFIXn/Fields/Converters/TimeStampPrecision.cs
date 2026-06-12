@@ -1,11 +1,10 @@
 ﻿
-namespace QuickFix.Fields.Converters
+namespace QuickFix.Fields.Converters;
+
+public enum TimeStampPrecision
 {
-    public enum TimeStampPrecision
-    {
-        Second,
-        Millisecond,
-        Microsecond,
-        Nanosecond
-    }
+    Second,
+    Millisecond,
+    Microsecond,
+    Nanosecond
 }
